@@ -54,13 +54,12 @@ def ingest_breweries_data(output_path, timestamp):
         data = extractor.fetch_all_breweries()
         
         # Save to bronze
-        file_suffix = timestamp.strftime("%Y%m%d_%H%M%S")
         date_folder = timestamp.strftime("%Y-%m-%d")
         directory_path = os.path.join(output_path, date_folder)
         if not os.path.exists(directory_path):
             os.makedirs(directory_path)
 
-        file_path = os.path.join(directory_path, f"breweries_raw_{file_suffix}.json")
+        file_path = os.path.join(directory_path, f"breweries_raw.json")
 
         with open(file_path, 'w') as f:
             json.dump(data, f)
