@@ -1,0 +1,9 @@
+apache-airflow==2.10.0         # Airflow for orchestration
+apache-airflow-providers-apache-spark
+numpy==1.26.4
+pandas                        # For data transformation and aggregation
+requests                      # To fetch data from the Open breweries DB API
+pyarrow                       # Required for saving Parquet files
+fastparquet                   # Alternative backend for Parquet support
+pytest                        # For writing and running test cases
+pyspark

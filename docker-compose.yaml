@@ -1,9 +1,10 @@
-version: '3'
+version: '3.8'
 
 x-spark-common: &spark-common
   image: bitnami/spark:latest
   volumes:
     - ./jobs:/opt/bitnami/spark/jobs
+  user: "${AIRFLOW_UID:-50000}:0" 
   networks:
     - ab-inbev
 
@@ -55,6 +56,10 @@ services:
     networks:
       - ab-inbev
 
+  scheduler:
+    <<: *airflow-common
+    command: bash -c "airflow db migrate && airflow users create --username admin --firstname Danilo --lastname Alves --role Admin --email dsalvesdsa@gmail.com --password admin && airflow scheduler"
+
   webserver:
     <<: *airflow-common
     command: webserver
@@ -62,10 +67,6 @@ services:
       - "8080:8080"
     depends_on:
       - scheduler
-
-  scheduler:
-    <<: *airflow-common
-    command: bash -c "airflow db migrate && airflow users create --username admin --firstname Danilo --lastname Alves --role Admin --email dsalvesdsa@gmail.com --password admin && airflow scheduler"
 
 networks:
   ab-inbev:
