@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 import requests
 from typing import List, Dict
@@ -47,27 +48,26 @@ class breweriesAPIExtractor:
             raise
 
 
-def ingest_breweries_data(output_path, timestamp):
-    """Extract breweries data and save to bronze"""
-    try:
-        extractor = breweriesAPIExtractor()
-        data = extractor.fetch_all_breweries()
-        
-        # Save to bronze
-        file_suffix = timestamp.strftime("%Y%m%d_%H%M%S")
-        date_folder = timestamp.strftime("%Y-%m-%d")
-        directory_path = os.path.join(output_path, date_folder)
-        if not os.path.exists(directory_path):
-            os.makedirs(directory_path)
+timestamp=datetime.now()
+"""Extract breweries data and save to bronze"""
+try:
+    extractor = breweriesAPIExtractor()
+    data = extractor.fetch_all_breweries()
+    
+    # Save to bronze
+    date_folder = timestamp.strftime("%Y-%m-%d")
+    directory_path = os.path.join("./data/bronze/breweries/json/", date_folder)
+    if not os.path.exists(directory_path):
+        os.makedirs(directory_path)
 
-        file_path = os.path.join(directory_path, f"breweries_raw_{file_suffix}.json")
+    file_path = os.path.join(directory_path, f"breweries_raw.json")
 
-        with open(file_path, 'w') as f:
-            json.dump(data, f)
-        
-        logging.info(f"Raw data saved to {file_path}")
-                
-    except Exception as e:
-        logging.error(f"Failed to fetch and save breweries data: {str(e)}")
-        raise
+    with open(file_path, 'w') as f:
+        json.dump(data, f)
+    
+    logging.info(f"Raw data saved to {file_path}")
+            
+except Exception as e:
+    logging.error(f"Failed to fetch and save breweries data: {str(e)}")
+    raise
   
