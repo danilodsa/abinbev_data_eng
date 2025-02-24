@@ -1,24 +1,20 @@
-# abinbev_data_eng
-AbInbev challenge development
+# AbInbev challenge development
 
+## Design Choices
+- Medallion Architecture: Data is stored in three layers (Bronze, Silver, Gold) for better organization and scalability.
+- Apache Airflow: Used for orchestration due to its robust scheduling, monitoring, and error-handling capabilities. Airflow allows for easy retries, task dependencies, and pipeline visualization. Provides a user-friendly UI for monitoring pipeline runs and logs.
+- Modularity: The project is organized into separate scripts for fetching, transforming, and aggregating data, making it easy to maintain and extend.
+- Containerization: Docker is used to containerize the application, ensuring consistency across environments and simplifying deployment.
 
-Design Choices
-Medallion Architecture: Data is stored in three layers (Bronze, Silver, Gold) for better organization and scalability.
+- Pandas was used due to the small dataset size, being sufficient to process this amount of data. Also used due to ease of containerization and integration with airflow. PySpark was used in other versions, running well locally but presenting some incompatibilities when containerized together with airflow.
 
-Apache Airflow: Used for orchestration due to its robust scheduling, monitoring, and error-handling capabilities. Airflow allows for easy retries, task dependencies, and pipeline visualization. Provides a user-friendly UI for monitoring pipeline runs, task statuses, and logs.
+- To test data processing steps, pytest was used due to the familiarity.
 
-PySpark: Used for data transformation and aggregation due to its scalability and ability to handle large datasets efficiently.
-
-Modularity: The project is organized into separate scripts for fetching, transforming, and aggregating data, making it easy to maintain and extend.
-
-Containerization: Docker is used to containerize the application, ensuring consistency across environments and simplifying deployment.
-
-
-
+## Project structure
 ABINBEV_DATA_ENG/
 ├── dags/                  # Airflow DAGs
 │   └── breweries_pipeline.py
-├── data/                  # Data lake (bronze, silver, gold layers will be stored here)
+├── data/                  # Data lake, medallion architecture (bronze, silver, gold layers will be stored here)
 ├── tasks/                 # ETL task scripts
 │   ├── __init__.py        
 │   ├── bronze_to_silver.py
@@ -33,14 +29,14 @@ ABINBEV_DATA_ENG/
 ├── README.md              # Documentation
 └── requirements.txt       # Python dependencies
 
+## How to run it
+docker-compose up --build
 
+
+
+## Support material used
 https://airflow.apache.org/docs/apache-airflow/2.10.0/installation/prerequisites.html
-
 https://airflow.apache.org/docs/apache-airflow/stable/docker-compose.yaml
 
-mkdir -p ./dags ./logs ./plugins ./config
-echo -e "AIRFLOW_UID=$(id -u)" > .env
 
 
-RODAR
-docker-compose up --build
