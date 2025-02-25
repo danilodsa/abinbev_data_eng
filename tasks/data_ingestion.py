@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 import requests
 from typing import List, Dict
@@ -14,6 +15,8 @@ class breweriesAPIExtractor:
         all_breweries = []
         page = 1
         max_pages = 10
+
+        logging.info("Starting to ingest breweries data")
         while page <= max_pages:
             try:
                 breweries = self.fetch_breweries(page=page)
@@ -47,8 +50,13 @@ class breweriesAPIExtractor:
             raise
 
 
-def ingest_breweries_data(output_path, timestamp):
-    """Extract breweries data and save to bronze"""
+def ingest_breweries_data(output_path: str, timestamp: datetime):
+    """
+    Extract data from the breweries API and save it to the bronze layer.
+    Args:
+        output_path (str): Path to save the raw JSON files in the bronze layer.
+        timestamp (datetime): Timestamp of the data extraction.
+    """
     try:
         extractor = breweriesAPIExtractor()
         data = extractor.fetch_all_breweries()
