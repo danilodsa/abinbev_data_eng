@@ -1,4 +1,6 @@
-# AbInbev challenge development
+# AbInbev: BEES Data Engineering – Breweries Case
+
+![](assets/data_flow.png)
 
 ## Design Choices
 - Medallion Architecture: Data is stored in three layers (Bronze, Silver, Gold) for better organization and scalability.
@@ -10,12 +12,17 @@
 
 - To test data processing steps, pytest was used due to the familiarity.
 
-## Project structure
+### Flow Description
+- First, the data is ingested from Breweries API and saved "as is" at the Bronze layer;
+- The data is structured and cleaned, removing undesired or redundant columns (e.g. adress_1, adress_2 and adress_3) and saved at the Silver layer.
+- Finnaly, business rules were applied (for breweries data, aggregations by city and stante) and the data is saved at Gold layer, able to consumption.
+
+## Project Structure
 ```
 ABINBEV_DATA_ENG/
 ├── dags/                  # Airflow DAGs
 │   └── breweries_pipeline.py
-├── data/                  # Data lake, medallion architecture (bronze, silver, gold layers will be stored here)
+├── data/                  # Data lake, medallion architecture (Bronze, Silver, Gold layers will be stored here)
 ├── logs/                  # Airflow logs
 ├── tasks/                 # ETL task scripts
 │   ├── __init__.py        
@@ -43,9 +50,9 @@ ABINBEV_DATA_ENG/
 As a timebox project, I focused on providing a baseline version that, of course, can be improved later by:
 
 - Implement Spark utilisation for handling large datasets
-- Implement Delta Lake at gold layer to anble ACID transactions and trackability
+- Implement Delta Lake at Gold layer to anble ACID transactions and trackability
 - Implement Airflow alerts sending (Slack, Teams, email)
-- Create SQL views/materialized views from gold layer to facilitate processed data consumption
+- Create SQL views/materialized views from Gold layer to facilitate processed data consumption
 - Structure code and data lake to receive other contexts
 - Increase test cases and coverage
 
