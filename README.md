@@ -43,6 +43,8 @@ ABINBEV_DATA_ENG/
 - Install docker desktop: https://www.docker.com/get-started/
 - Run command **{ docker-compose up --build }** from the root folder
 - Access Airflow UI at http://localhost:8080/
+    - User: airflow
+    - Pswd: airflow
 - Enable breweries pipeline trigger (by default, the pipeline trigger will be off at airflow first setup)
 
 

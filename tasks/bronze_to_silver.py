@@ -19,7 +19,9 @@ def bronze_to_silver(bronze_path: str, silver_path: str, timestamp: datetime):
         raw_file_path = os.path.join(bronze_path, date_folder, f"breweries_raw.json")
         
         raw_breweries_data = pd.read_json(raw_file_path)
-
+        
+        logging.info("Structuring and cleaning data")
+        
         # Select relevant columns for the silver layer
         cleaned_df = raw_breweries_data[[
             "id",
@@ -41,7 +43,7 @@ def bronze_to_silver(bronze_path: str, silver_path: str, timestamp: datetime):
         
         cleaned_df.to_parquet(destination_file_path, partition_cols=["state_province"])
 
-        logging.info(f"Data successfully transformed and saved to {destination_file_path}")
+        logging.info(f"Data successfully saved to {destination_file_path}")
     
     except Exception as e:
         logging.error(f"Failed to transform data to silver: {str(e)}")
