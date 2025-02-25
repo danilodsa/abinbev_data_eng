@@ -8,7 +8,7 @@ from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOpe
 from datetime import datetime, timedelta
 
 
-timestamp = datetime.now()
+timestamp = datetime.now().strftime("%Y-%m-%d")
 
 default_args = {
     "owner": "airflow",
@@ -32,6 +32,9 @@ with DAG(
         task_id="breweries_ingest_data",
         conn_id="spark-conn",
         application="tasks/data_ingestion.py",
+        application_args=[
+            "--timestamp", timestamp
+        ],
         dag=dag
     )    
     
@@ -39,6 +42,9 @@ with DAG(
         task_id="breweries_bronze_to_silver",
         conn_id="spark-conn",
         application="tasks/bronze_to_silver.py",
+        application_args=[
+            "--timestamp", timestamp
+        ],        
         dag=dag
     )        
     

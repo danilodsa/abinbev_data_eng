@@ -52,3 +52,5 @@ agg_breweries_type_state.write \
     .mode("overwrite") \
     .partitionBy("state_province") \
     .save("./data/gold/breweries/breweries_per_state.parquet") 
+
+spark.stop()

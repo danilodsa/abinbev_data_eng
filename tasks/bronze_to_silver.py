@@ -1,3 +1,4 @@
+import argparse
 import logging
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col
@@ -7,8 +8,11 @@ import os
 """
 Transform raw JSON data from the bronze layer into a partitioned Parquet dataset in the silver layer.
 """
+parser = argparse.ArgumentParser()
+parser.add_argument("--timestamp", required=True)
+args = parser.parse_args()
+timestamp = args.timestamp
 
-timestamp=datetime.now()
 # Spark session
 try:
     spark = SparkSession.builder \
@@ -20,8 +24,7 @@ except Exception as e:
 
 # Read the raw JSON data from the bronze layer
 # file_suffix = timestamp.strftime("%Y%m%d_%H%M%S")
-date_folder = timestamp.strftime("%Y-%m-%d")
-raw_file_path = os.path.join("./data/bronze/breweries/json/", date_folder, f"breweries_raw.json")
+raw_file_path = os.path.join("./data/bronze/breweries/json/", timestamp, f"breweries_raw.json")
 
 raw_breweries_data = spark.read.json(raw_file_path)
 
@@ -49,3 +52,5 @@ transformed_df.write \
     .parquet(destination_file_path)
 
 logging.info(f"Data successfully transformed and saved to {destination_file_path}")
+
+spark.stop()

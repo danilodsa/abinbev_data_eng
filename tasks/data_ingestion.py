@@ -4,6 +4,7 @@ import requests
 from typing import List, Dict
 import logging
 import json
+import argparse
 
 class breweriesAPIExtractor:
     def __init__(self, base_url: str = "https://api.openbrewerydb.org"):
@@ -48,15 +49,18 @@ class breweriesAPIExtractor:
             raise
 
 
-timestamp=datetime.now()
+parser = argparse.ArgumentParser()
+parser.add_argument("--timestamp", required=True)
+args = parser.parse_args()
+timestamp = args.timestamp
+
 """Extract breweries data and save to bronze"""
 try:
     extractor = breweriesAPIExtractor()
     data = extractor.fetch_all_breweries()
     
     # Save to bronze
-    date_folder = timestamp.strftime("%Y-%m-%d")
-    directory_path = os.path.join("./data/bronze/breweries/json/", date_folder)
+    directory_path = os.path.join("./data/bronze/breweries/json/", timestamp)
     if not os.path.exists(directory_path):
         os.makedirs(directory_path)
 
