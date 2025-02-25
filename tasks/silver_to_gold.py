@@ -38,8 +38,8 @@ def silver_to_gold(silver_path: str, gold_path: str):
         # Save data
         logging.info(f"Saving aggregated data to {gold_path}")
         
-        final_agg_breweries_type_city.to_parquet(gold_path + '/breweries_per_city.parquet', partition_cols=["city"])
-        final_agg_breweries_type_state.to_parquet(gold_path + '/breweries_per_state.parquet', partition_cols=["state_province"])
+        final_agg_breweries_type_city.to_parquet(gold_path + '/breweries_per_city.parquet', partition_cols=["city"], max_partitions=7000)
+        final_agg_breweries_type_state.to_parquet(gold_path + '/breweries_per_state.parquet', partition_cols=["state_province"], max_partitions=7000)
         
         logging.info("Aggregations successfully saved to gold layer")
         
