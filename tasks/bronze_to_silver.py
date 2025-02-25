@@ -19,7 +19,7 @@ except Exception as e:
     raise
 
 # Read the raw JSON data from the bronze layer
-file_suffix = timestamp.strftime("%Y%m%d_%H%M%S")
+# file_suffix = timestamp.strftime("%Y%m%d_%H%M%S")
 date_folder = timestamp.strftime("%Y-%m-%d")
 raw_file_path = os.path.join("./data/bronze/breweries/json/", date_folder, f"breweries_raw.json")
 
