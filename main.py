@@ -7,7 +7,7 @@ from tasks.data_ingestion import ingest_breweries_data
 from tasks.bronze_to_silver import bronze_to_silver
 from tasks.silver_to_gold import silver_to_gold
 
-#Local tests only
+# Use only for local execution
 if __name__ == "__main__":
     timestamp=datetime.now()
     ingest_breweries_data(output_path="./data/bronze/breweries/json/", timestamp=timestamp)
