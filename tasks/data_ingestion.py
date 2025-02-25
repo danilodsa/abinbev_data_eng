@@ -14,10 +14,9 @@ class breweriesAPIExtractor:
         """Fetch all breweries from the API using pagination"""
         all_breweries = []
         page = 1
-        max_pages = 10
 
         logging.info("Starting to ingest breweries data")
-        while page <= max_pages:
+        while True:
             try:
                 breweries = self.fetch_breweries(page=page)
                 if not breweries:
